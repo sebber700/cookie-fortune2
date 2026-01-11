@@ -59,7 +59,9 @@ const Index = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: '#fff',
+      backgroundImage: 'url(/background.png)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
       fontFamily: "'Cormorant Garamond', Georgia, serif",
       overflow: 'hidden'
     }}>
@@ -100,27 +102,29 @@ const Index = () => {
           position: 'absolute',
           left: '50%',
           top: '30%',
-          transform: `translateX(-50%) translateY(${showPaper ? '-80px' : '20px'})`,
+          transform: `translateX(-50%) translateY(${showPaper ? '-100px' : '20px'})`,
           opacity: showPaper ? 1 : 0,
           transition: 'all 1s ease-out',
           zIndex: 10
         }}>
           <div style={{
-            width: 180,
-            padding: '16px 14px',
-            background: 'linear-gradient(135deg, #faf8f5 0%, #f5f2eb 50%, #ebe7de 100%)',
-            borderRadius: 4,
-            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+            width: 220,
+            padding: '20px 18px',
+            background: '#e6b368',
+            border: '3px solid #8f210d',
+            borderRadius: 6,
+            boxShadow: '0 6px 24px rgba(0,0,0,0.2)',
             transform: `scaleY(${showPaper ? 1 : 0.1})`,
             transformOrigin: 'center bottom',
             transition: 'transform 0.8s ease-out 0.3s'
           }}>
             <p style={{
-              fontSize: 15,
-              lineHeight: 1.6,
-              color: '#4a4540',
+              fontSize: 18,
+              lineHeight: 1.7,
+              color: '#8f210d',
               textAlign: 'center',
               fontStyle: 'italic',
+              fontWeight: 600,
               margin: 0,
               opacity: showText ? 1 : 0,
               transition: 'opacity 0.8s ease-out'
