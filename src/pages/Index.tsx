@@ -23,87 +23,123 @@ const fortunes = [
   "You are exactly where you need to be."
 ];
 
-type AnimationPhase = 
-  | "initial" 
-  | "cracking" 
-  | "broken" 
-  | "paper-rising" 
-  | "paper-unrolling" 
-  | "revealing";
-
 const Index = () => {
-  const [phase, setPhase] = useState<AnimationPhase>("initial");
+  const [showBroken, setShowBroken] = useState(false);
+  const [showPaper, setShowPaper] = useState(false);
+  const [showText, setShowText] = useState(false);
+  const [shake, setShake] = useState(false);
   const [fortune] = useState(() => 
     fortunes[Math.floor(Math.random() * fortunes.length)]
   );
 
   useEffect(() => {
-    const timers: NodeJS.Timeout[] = [];
-    
-    // Animation timeline
-    timers.push(setTimeout(() => setPhase("cracking"), 800));
-    timers.push(setTimeout(() => setPhase("broken"), 1400));
-    timers.push(setTimeout(() => setPhase("paper-rising"), 2000));
-    timers.push(setTimeout(() => setPhase("paper-unrolling"), 3200));
-    timers.push(setTimeout(() => setPhase("revealing"), 4200));
+    // Shake cookie
+    const t1 = setTimeout(() => setShake(true), 800);
+    // Show broken cookie
+    const t2 = setTimeout(() => {
+      setShake(false);
+      setShowBroken(true);
+    }, 1200);
+    // Show paper rising
+    const t3 = setTimeout(() => setShowPaper(true), 1600);
+    // Show fortune text
+    const t4 = setTimeout(() => setShowText(true), 3000);
 
-    return () => timers.forEach(clearTimeout);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+    };
   }, []);
 
   return (
-    <div className="fortune-container">
-      {/* Whole cookie */}
-      <div 
-        className={`cookie-whole ${
-          phase === "initial" ? "visible" : 
-          phase === "cracking" ? "cracking" : "hidden"
-        }`}
-      >
-        <img 
-          src="/cookie-whole.svg" 
-          alt="" 
-          className="cookie-image"
-          draggable={false}
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: '#fff',
+      fontFamily: "'Cormorant Garamond', Georgia, serif",
+      overflow: 'hidden'
+    }}>
+      <div style={{ position: 'relative', width: 280, height: 280 }}>
+        {/* Whole cookie */}
+        <img
+          src="/cookie-whole.svg"
+          alt=""
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            opacity: showBroken ? 0 : 1,
+            transition: 'opacity 0.3s ease',
+            animation: shake ? 'shake 0.4s ease-in-out' : 'none'
+          }}
         />
-      </div>
-
-      {/* Broken cookie */}
-      <div 
-        className={`cookie-broken ${
-          phase === "broken" || 
-          phase === "paper-rising" || 
-          phase === "paper-unrolling" || 
-          phase === "revealing" 
-            ? "visible" 
-            : "hidden"
-        }`}
-      >
-        <img 
-          src="/cookie-broken.svg" 
-          alt="" 
-          className="cookie-image cookie-broken-image"
-          draggable={false}
+        
+        {/* Broken cookie */}
+        <img
+          src="/cookie-broken.svg"
+          alt=""
+          style={{
+            position: 'absolute',
+            width: '120%',
+            height: '120%',
+            left: '-10%',
+            top: '-10%',
+            objectFit: 'contain',
+            opacity: showBroken ? 1 : 0,
+            transition: 'opacity 0.3s ease'
+          }}
         />
-      </div>
 
-      {/* Fortune paper */}
-      <div 
-        className={`paper-container ${
-          phase === "paper-rising" ? "rising" :
-          phase === "paper-unrolling" ? "unrolling" :
-          phase === "revealing" ? "revealed" : ""
-        }`}
-      >
-        <div className="paper">
-          <p 
-            className={`fortune-text ${
-              phase === "revealing" ? "visible" : ""
-            }`}
-          >
-            {fortune}
-          </p>
+        {/* Paper with fortune */}
+        <div style={{
+          position: 'absolute',
+          left: '50%',
+          top: '30%',
+          transform: `translateX(-50%) translateY(${showPaper ? '-80px' : '20px'})`,
+          opacity: showPaper ? 1 : 0,
+          transition: 'all 1s ease-out',
+          zIndex: 10
+        }}>
+          <div style={{
+            width: 180,
+            padding: '16px 14px',
+            background: 'linear-gradient(135deg, #faf8f5 0%, #f5f2eb 50%, #ebe7de 100%)',
+            borderRadius: 4,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+            transform: `scaleY(${showPaper ? 1 : 0.1})`,
+            transformOrigin: 'center bottom',
+            transition: 'transform 0.8s ease-out 0.3s'
+          }}>
+            <p style={{
+              fontSize: 15,
+              lineHeight: 1.6,
+              color: '#4a4540',
+              textAlign: 'center',
+              fontStyle: 'italic',
+              margin: 0,
+              opacity: showText ? 1 : 0,
+              transition: 'opacity 0.8s ease-out'
+            }}>
+              {fortune}
+            </p>
+          </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes shake {
+          0%, 100% { transform: translateX(0) rotate(0deg); }
+          20% { transform: translateX(-3px) rotate(-1deg); }
+          40% { transform: translateX(3px) rotate(1deg); }
+          60% { transform: translateX(-2px) rotate(-0.5deg); }
+          80% { transform: translateX(2px) rotate(0.5deg); }
+        }
+      `}</style>
     </div>
   );
 };
