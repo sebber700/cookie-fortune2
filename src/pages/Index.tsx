@@ -65,7 +65,7 @@ const Index = () => {
       fontFamily: "'Cormorant Garamond', Georgia, serif",
       overflow: 'hidden'
     }}>
-      <div style={{ position: 'relative', width: 280, height: 280 }}>
+      <div style={{ position: 'relative', width: 380, height: 380 }}>
         {/* Whole cookie */}
         <img
           src="/cookie-whole.svg"
@@ -87,39 +87,39 @@ const Index = () => {
           alt=""
           style={{
             position: 'absolute',
-            width: '120%',
-            height: '120%',
-            left: '-10%',
-            top: '-10%',
+            width: '140%',
+            height: '140%',
+            left: '-20%',
+            top: '-20%',
             objectFit: 'contain',
             opacity: showBroken ? 1 : 0,
             transition: 'opacity 0.3s ease'
           }}
         />
 
-        {/* Paper with fortune */}
+        {/* Paper with fortune - centered in cookie */}
         <div style={{
           position: 'absolute',
           left: '50%',
-          top: '30%',
-          transform: `translateX(-50%) translateY(${showPaper ? '-100px' : '20px'})`,
+          top: '50%',
+          transform: `translate(-50%, -50%) translateY(${showPaper ? '0' : '40px'})`,
           opacity: showPaper ? 1 : 0,
           transition: 'all 1s ease-out',
           zIndex: 10
         }}>
           <div style={{
-            width: 220,
-            padding: '20px 18px',
+            width: 260,
+            padding: '24px 20px',
             background: '#e6b368',
             border: '3px solid #8f210d',
             borderRadius: 6,
-            boxShadow: '0 6px 24px rgba(0,0,0,0.2)',
+            boxShadow: '0 6px 24px rgba(0,0,0,0.3)',
             transform: `scaleY(${showPaper ? 1 : 0.1})`,
-            transformOrigin: 'center bottom',
+            transformOrigin: 'center center',
             transition: 'transform 0.8s ease-out 0.3s'
           }}>
             <p style={{
-              fontSize: 18,
+              fontSize: 20,
               lineHeight: 1.7,
               color: '#8f210d',
               textAlign: 'center',
